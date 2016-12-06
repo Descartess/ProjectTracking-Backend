@@ -168,7 +168,7 @@ CORS_ALLOW_HEADERS = (
 # settings for heroku app
 
 if os.getcwd() =='/app':
-    import dj_databse_url
+    import dj_database_url
     DATABASES = {
     'default':dj_databse_url.config(default='postgres://localhost')
     }

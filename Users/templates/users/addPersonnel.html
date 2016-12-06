@@ -1,0 +1,13 @@
+{% extends "projects/base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+<h2>Add Personnel</h2>
+<form action="{% url 'users:addPersonnel' %}" method="POST">
+	{% csrf_token %}
+	{% bootstrap_form form%}
+	{% buttons %}
+	<button name="Submit" class="btn btn-primary"> Add Personnel </button>
+	{% endbuttons %}
+</form>
+	
+{% endblock content %}

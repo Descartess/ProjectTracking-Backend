@@ -1,0 +1,17 @@
+{% extends "projects/base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+	<h2>Log In</h2>
+{% if form.errors %}
+<p>Your Username and Password didn't Match.</p>	
+{% endif %}
+<form method="POST" action="{% url 'users:login' %}">
+	{% csrf_token %}
+	{% bootstrap_form form %}
+	{% buttons %}
+	<button name ='Submit' class="btn btn-primary">Log In</button>
+	<input type='hidden' name='next' value="{% url 'projects:index' %}" />
+	{% endbuttons %}
+</form>
+{% endblock content %}
+

@@ -1,0 +1,41 @@
+{% extends "projects/base.html" %}
+
+{% block content %}
+
+The percentage is {{percentage}} .
+<h3>{{Project.name}}</h3>
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#progress">Progress</a></li>
+		<li><a data-toggle="tab" href="#log">Event Logs</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div id="progress" class="tab-pane fade in active">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h6>Project Progress</h6>	
+				</div>
+			<div class="panel-body">
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valumax="100" style="width:{{percentage}}%">{{percentage}}%(Completed)</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div id="log" class="tab-pane fade ">
+			<ul class="list-group">
+				{% for log in logs  %}
+					<li class="list-group-item list-group-item-success">{{log.activity}} {{log.project.proj_id}} {{log.proj_rev}} {{log.date}}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	
+	{% if step %}
+	<p>
+		<a href="{% url 'projects:Proceed' step%}">
+			<button type="button" class="btn btn-primary" name="Submit">Next</button>
+		</a>
+	</p>
+	{% endif %}
+{% endblock content %}

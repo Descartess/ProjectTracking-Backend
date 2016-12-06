@@ -1,0 +1,23 @@
+Log Sheet.txt
+This contains planned expansions and new developments as the time added.
+#8th July 2016
+Program the progress bar
+#7th July 2016
+Program permissions
+#28th June 2016
+Display content completed
+Make bootstrap and Jquery local on the machine
+#8th June 2016
+Add Search functionality
+# 31st May 2016
+Display content that is one someones desk.
+Add more styling..
+# 10th May 2016
+Modify view project view to display different content for staff and clients.
+Add code that creates logs for project developments.
+Restrict clients to view only their projects
+Modify index.html to display recent developments in the system
+# 5th May 2016 
+Store Project Activities in the Logs Table in the database.
+Link to projects page after add project view. 
+Display logs on the view project page.

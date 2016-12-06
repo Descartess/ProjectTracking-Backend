@@ -1,0 +1,64 @@
+{% extends "projects/base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+	<ul class="nav nav-pills">
+	<li class="active"><a href="{% url 'users:addClient' %}">Create New Project</a></li>
+	<li><a href="{% url 'users:addPersonnel' %}">Create New Personnel</a></li>
+	<li >
+	<form action="{% url 'projects:Search' %}" method="POST" >
+		{% csrf_token %}
+		{% bootstrap_form form layout='inline'%}
+	</form>
+	</li>
+	</ul>
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#recent">Recent</a></li>
+		<li><a data-toggle="tab" href="#market">Marketing <span class="badge"> {{Mkt|length}}</span></a></li>
+		<li><a data-toggle="tab" href="#proj">Projects Department <span class="badge">{{Prj|length}} </span></a></li>
+		<li><a data-toggle="tab" href="#eng">Engineering <span class="badge">{{Eng|length}}</span> </a></li>
+		<li><a data-toggle="tab" href="#fab">Fabrication <span class="badge">{{Fab|length}}</span> </a></li>
+	</ul>
+	<div class="tab-content">
+		<div id="recent" class="tab-pane fade in active">
+			<div class="list-group">
+			{% for log in logs  %}
+				<a href="{% url 'projects:viewProject' log.project.id %}" class="list-group-item  list-group-item-success">
+					<b>{{log.activity}}</b>  {{log.date|date:'M d, Y H:i'}}
+				<span class="badge">{{log.project.name}} {{log.project.proj_id}}{{log.proj_rev}}</span>
+				</a>
+			{% endfor %}
+			</div>
+		</div>
+		<div id="market" class="tab-pane fade">
+			{% for elm in Mkt %}
+			    <a href="{% url 'projects:viewProject' elm.1.id %} "class="list-group-item  list-group-item-info">
+				{{elm.0.activity}} <span class="badge">{{elm.1.name}} {{elm.1.proj_id}}</span>
+				</a>
+			{% endfor %}
+		</div>
+		<div id="proj" class="tab-pane fade">
+		<div class="list-group">
+			{% for elm in Prj %}
+			   <a href="{% url 'projects:viewProject' elm.1.id %} "class="list-group-item  list-group-item-info">
+				{{elm.0.activity}} <span class="badge">{{elm.1.name}} {{elm.1.proj_id}}</span>
+				</a>
+			{% endfor %}
+		</div>
+		</div>
+		<div id="eng" class="tab-pane fade">
+			{% for elm in Eng %}
+				<a href="{% url 'projects:viewProject' elm.1.id %} "class="list-group-item  list-group-item-info">
+				{{elm.0.activity}} <span class="badge">{{elm.1.name}} {{elm.1.proj_id}}</span>
+				</a>
+			{% endfor %}
+		</div>
+		<div id="fab" class="tab-pane fade">
+			{% for elm in Fab %}
+				<a href="{% url 'projects:viewProject' elm.1.id %}" class="list-group-item  list-group-item-info">
+				{{elm.0.activity}} <span class="badge">{{elm.1.name}} {{elm.1.proj_id}}</span>
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% extends "projects/base.html" %}
+
+{% block content %}
+	<p>Client:{{client.name }}</p>
+	Contact Person {{client.contact_person_name}}
+	</br>
+	<ul class="list-group">
+		{% for project in  projects %}
+			<li class="list-group-item list-group-item-info"><a href="{% url 'projects:viewProject' project.id %}">{{project.name}} {{project.proj_id}} {{project.revision}}</a></li>
+		{% endfor %}
+	</ul>
+	
+{% endblock content %}

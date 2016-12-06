@@ -170,7 +170,7 @@ CORS_ALLOW_HEADERS = (
 if os.getcwd() =='/app':
     import dj_database_url
     DATABASES = {
-    'default':dj_databse_url.config(default='postgres://localhost')
+    'default':dj_database_url.config(default='postgres://localhost')
     }
     # Honor the X forwarded Proto header 
     SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARED_PROTO",'hhtps')

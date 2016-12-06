@@ -174,7 +174,8 @@ if os.getcwd() =='/app':
     }
     # Honor the X forwarded Proto header 
     SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARED_PROTO",'hhtps')
-    ALLOWED_HOSTS=['*']
+    ALLOWED_HOSTS=['ssc-project-tracking.herokuapp.com']
+    DEBUG = False
     BASE_DIR=os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS=(

@@ -16,6 +16,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 
+# Serializer Functions 
+
 class ProjectList(APIView):
 	""" 
 	List all Projects
@@ -308,7 +310,7 @@ class TaskSaveList(APIView):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data)
-		
+
 
 class CommentList(APIView):
 	def get(self,request,format = None):
@@ -321,3 +323,6 @@ class CommentSaveList(APIView):
 	def post(self,request,format = None):
 		pass
 
+class CommentDetailList(APIView):
+	def get(self,request,format = None):
+		pass

@@ -125,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 LOGIN_URL = '/users/login/'
 
@@ -166,6 +166,12 @@ CORS_ALLOW_HEADERS = (
     )
 
 # settings for heroku app
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS=(
+        os.path.join(BASE_DIR,'static'),
+       )
 
 if os.getcwd() =='/app':
     import dj_database_url

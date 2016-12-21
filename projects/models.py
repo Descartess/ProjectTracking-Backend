@@ -61,3 +61,27 @@ class Logs(models.Model):
 	def __unicode__(self):
 		return "%s %s"%(self.project,self.activity)
 
+
+class Tasks(models.Model):
+	task_description = models.CharField(max_length=100)
+	project = models.ForeignKey(Project)
+	activity = models.ForeignKey(Activity)
+	person = models.ForeignKey(Personnel,related_name='person')
+	supervisor = models.ForeignKey(Personnel,related_name='supervisor')
+	due_date = models.DateField(null=True,blank=True)
+	date_added = models.DateField(auto_now_add=True)
+	status = models.IntegerField()
+
+	def __unicode__(self):
+		return "%s %s %s "%(self.task_description,self.project,self.activity)
+
+class Comments(models.Model):
+	task= models.ForeignKey(Tasks)
+	comment = models.TextField()
+	owner = models.ForeignKey(Personnel)
+	date = models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return "%s %s"%(self.task,self.comment)
+
+

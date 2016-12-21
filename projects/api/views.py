@@ -85,7 +85,7 @@ class ProjectDetail(APIView):
 	Displays project details 
 	"""
 	permission_classes = (IsAuthenticated,)
-	authentication_classes = (TokenAuthentication,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
 	def get_object(self,pk):
 		try:
 			return Project.objects.get(pk=pk)
@@ -130,7 +130,7 @@ class SearchList(APIView):
 	"""
 	permission_classes = (IsAuthenticated,PersonnelPermission,)
 	
-	authentication_classes = (TokenAuthentication,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
 	def post(self,request,format = None):
 		search_term =  request.data["search_term"]
 		projects=Project.objects.filter(name__icontains=search_term) | Project.objects.filter(proj_id__icontains=search_term)
@@ -162,7 +162,7 @@ class Notifications(APIView):
 	"""
 	permission_classes = (IsAuthenticated,PersonnelPermission,)
 
-	authentication_classes = (TokenAuthentication,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
 
 	def get(self,request,format = None):
 		active_projects= Project.objects.filter(status__icontains="In Progress")
@@ -175,30 +175,30 @@ class Notifications(APIView):
 			if actv.classification == 'Projects Department':
 				activ = ActivitySerializer(actv)
 				dat = activ.data
-				dat["name"]=projct.name; dat["id"]=projct.id;
+				dat["name"]=projct.name; dat["proj_id"]=projct.id;
 				proj_log.append(dat)
 			elif actv.classification == 'Marketing':
 				activ = ActivitySerializer(actv)
 				dat = activ.data
-				dat["name"]=projct.name; dat["id"]=projct.id;
+				dat["name"]=projct.name; dat["proj_id"]=projct.id;
 				mkt_log.append(dat)
 			elif actv.classification == 'Engineering':
 				activ = ActivitySerializer(actv)
 				dat = activ.data
-				dat["name"]=projct.name; dat["id"]=projct.id;
+				dat["name"]=projct.name; dat["proj_id"]=projct.id;
 				eng_log.append(dat)
 			elif actv.classification == 'Fabrication':
 				activ = ActivitySerializer(actv)
 				dat = activ.data
-				dat["name"]=projct.name; dat["id"]=projct.id;
+				dat["name"]=projct.name; dat["proj_id"]=projct.id;
 				fab_log.append(dat)
 			elif actv.classification == 'Client':
 				activ = ActivitySerializer(actv)
 				dat = activ.data
-				dat["name"]=projct.name; dat["id"]=projct.id;
+				dat["name"]=projct.name; dat["proj_id"]=projct.id;
 				client_log.append(dat)	
 
-		data = {"project_dept":proj_log,"marketing_dept":mkt_log,"Eng_dept":eng_log,"Fab_dept":fab_log}
+		data = {"project_dept":proj_log,"marketing_dept":mkt_log,"Eng_dept":eng_log,"Fab_dept":fab_log,"client_dept":client_log}
 		return Response(data)
 
 
@@ -209,7 +209,7 @@ class UpdateProjectProgess(APIView):
 	"""
 
 	permission_classes = (PersonnelPermission,)
-	authentication_classes = (TokenAuthentication,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
 	def get_object(self,pk):
 		try:
 			return Project.objects.get(pk=pk)
@@ -254,4 +254,70 @@ class UpdateProjectProgess(APIView):
 		return Response(data)
 
 
+class TaskList(APIView):
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
+	def get(self,request,pk,actv_id,format = None):
+		pk = int(pk)
+		try:
+			queryset = Tasks.objects.filter(project=pk,activity=actv_id)
+			serializer = TaskSerializer(queryset,many =True)
+			return Response(serializer.data)
+		except ObjectDoesNotExist:
+			data ={}
+			return Response(data)
+		pass
+
+class PersonnelTaskList(APIView):
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
+	def get(self,request,pk,format = None):
+		pk = int(pk)
+		try:
+			queryset = Tasks.objects.filter(person=pk)
+			serializer = TaskSerializer(queryset,many =True)
+			return Response(serializer.data)
+		except ObjectDoesNotExist:
+			data ={}
+			return Response(data)
+		pass
+
+class TaskSaveList(APIView):
+	permission_classes = (PersonnelPermission,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
+	def get_object(self,pk):
+		try:
+			return Tasks.objects.get(pk=pk)
+		except ObjectDoesNotExist:
+			data = {};return Response(data)
+		
+	def post(self,request,pk,format = None):
+		data = request.data
+		task =data["task_info"]
+		comment = data["comment"]
+		serializer = TaskSaveSerializer(data = task)
+		if serializer.is_valid():
+			Task = serializer.save() 
+			comment['task'] = Task.id
+			serializer0 = CommentSaveSerializer(data = comment)
+			if serializer0.is_valid():
+				serializer0.save()
+		return Response(serializer.data)
+
+	def put(self,request,pk,format = None):
+		task = self.get_object(pk)
+		serializer = TaskSaveSerializer(task,data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		
+
+class CommentList(APIView):
+	def get(self,request,format = None):
+		pass
+
+class CommentSaveList(APIView):
+	permission_classes = (PersonnelPermission,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
+
+	def post(self,request,format = None):
+		pass
 

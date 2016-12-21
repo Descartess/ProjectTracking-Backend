@@ -14,7 +14,6 @@ urlpatterns=[
    url(r'^staff/(?P<pk>\d+)/$',PersonnelDetail.as_view()),
    url(r'^client/(?P<pk>\d+)/$',ClientDetail.as_view()),
    # url(r'^search/$',SearchList.as_view()),
-
  ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

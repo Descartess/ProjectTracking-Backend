@@ -274,7 +274,7 @@ class PersonnelTaskList(APIView):
 	def get(self,request,pk,format = None):
 		pk = int(pk)
 		try:
-			queryset = Tasks.objects.filter(person=pk)
+			queryset = Tasks.objects.filter(person=pk,status=1) | Tasks.objects.filter(supervisor=pk,status=2)
 			serializer = TaskSerializer(queryset,many =True)
 			return Response(serializer.data)
 		except ObjectDoesNotExist:

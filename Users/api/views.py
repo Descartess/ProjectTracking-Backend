@@ -105,7 +105,7 @@ class ProjectAuthToken(ObtainAuthToken):
 	    				user=serializer.save()
     					persondata = PersonnelSerializer(person)
     					token, created = Token.objects.get_or_create(user=user)
-        				return Response({'token': token.key, 'user':persondata.data,'is_staff':'false'})
+        				return Response({'token': token.key, 'user':persondata.data,'is_staff':'true'})
 	    		except  ObjectDoesNotExist:
 	    			try:
 	    				person=Client.objects.get(email__iexact=username)
@@ -117,7 +117,7 @@ class ProjectAuthToken(ObtainAuthToken):
 	        				return Response({'token': token.key, 'user':persondata.data,'is_staff':'false'})
 
 	    			except ObjectDoesNotExist:
-	    				return Response({'value':'not caught  '})
+	    				return Response({'value':'not caught '})
 	    	
 	    	# Login Code 
 

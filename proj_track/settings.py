@@ -166,12 +166,12 @@ CORS_ALLOW_HEADERS = (
     )
 
 # settings for heroku app
-BASE_DIR=os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS=(
-        os.path.join(BASE_DIR,'static'),
-       )
+# STATICFILES_DIRS=(
+#         os.path.join(BASE_DIR,'static'),
+#        )
 
 if os.getcwd() =='/app':
     import dj_database_url

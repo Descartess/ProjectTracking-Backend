@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -173,6 +174,17 @@ STATIC_URL = '/static/'
 #         os.path.join(BASE_DIR,'static'),
 #        )
 
+redis_host = os.environ.get('REDIS_HOST','localhost')
+
+CHANNEL_LAYERS ={
+    "default":{
+        "BACKEND":"asgi_redis.RedisChannelLayer",
+        "CONFIG":{
+            "hosts":[(redis_host,6379)]
+        },
+        "ROUTING":"proj_track.routing.channel_routing"
+    }
+}
 if os.getcwd() =='/app':
     import dj_database_url
     DATABASES = {

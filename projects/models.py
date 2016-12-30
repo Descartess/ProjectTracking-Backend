@@ -1,7 +1,11 @@
 from __future__ import unicode_literals
 from Users.models import Client,Personnel
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
+from channels import Group
+import json
+from rest_framework.serializers import ModelSerializer
 
 class Project(models.Model):
 	A='A';B='B';C='C';D='D';E='E';F='F';G='G';
@@ -83,5 +87,30 @@ class Comments(models.Model):
 
 	def __unicode__(self):
 		return "%s %s"%(self.task,self.comment)
+
+
+class MProjectSerializer(ModelSerializer):
+	class Meta:
+		model = Project
+		fields =('id','name','proj_id','revision','date','status')
+
+class MActivitySerializer(ModelSerializer):
+	class Meta:
+		model =Activity
+		fields =('id','activity','classification','level')
+
+class MLogsSerializer(ModelSerializer):
+	project = MProjectSerializer()
+	activity= MActivitySerializer()
+	class Meta:
+		model =Logs
+		fields = ('id','project','activity','date',)
+
+@receiver(post_save,sender = Logs)
+def send_logs_notifications(sender,instance,created = False,**kwargs):
+	if created:
+		serializer = MLogsSerializer(instance)
+		Group("logs").send({"text":json.dumps(serializer.data)})
+	
 
 

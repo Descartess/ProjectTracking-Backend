@@ -174,13 +174,18 @@ STATIC_URL = '/static/'
 #         os.path.join(BASE_DIR,'static'),
 #        )
 
-redis_host = os.environ.get('REDIS_HOST','localhost')
+#localhost settings
+# redis_host = os.environ.get('REDIS_HOST','localhost')
+
 
 CHANNEL_LAYERS ={
     "default":{
         "BACKEND":"asgi_redis.RedisChannelLayer",
         "CONFIG":{
-            "hosts":[(redis_host,6379)]
+        #localhost settings
+            # "hosts":[(redis_host,6379)]
+            # heroku settings
+            "hosts":[os.environ.get('REDIS_URL','redis://localhost:6379')],
         },
         "ROUTING":"proj_track.routing.channel_routing"
     }

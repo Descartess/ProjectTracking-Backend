@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
 #from channels import Group
+import django_fanout as fanout
+
 import json
 from rest_framework.serializers import ModelSerializer
 
@@ -110,6 +112,7 @@ class MLogsSerializer(ModelSerializer):
 def send_logs_notifications(sender,instance,created = False,**kwargs):
 	if created:
 		serializer = MLogsSerializer(instance)
+		fanout.publish('test',serializer.data)
 		# Group("logs").send({"text":json.dumps(serializer.data)})
 	
 

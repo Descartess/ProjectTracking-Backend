@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'channels',
+    # 'channels',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -126,7 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+## FANOUT SETTINGS 
 
+FANOUT_REALM = '7935fe7a'
+FANOUT_KEY = '513F9t6sCt9EHBpPm8QPWQ=='
+
+
+## END OF SETTING
 
 LOGIN_URL = '/users/login/'
 
@@ -178,18 +184,18 @@ STATIC_URL = '/static/'
 # redis_host = os.environ.get('REDIS_HOST','localhost')
 
 
-CHANNEL_LAYERS ={
-    "default":{
-        "BACKEND":"asgi_redis.RedisChannelLayer",
-        "CONFIG":{
-        #localhost settings
-            # "hosts":[(redis_host,6379)]
-            # heroku settings
-            "hosts":[os.environ.get('REDIS_URL','redis://localhost:6379')],
-        },
-        "ROUTING":"proj_track.routing.channel_routing"
-    }
-}
+# CHANNEL_LAYERS ={
+#     "default":{
+#         "BACKEND":"asgi_redis.RedisChannelLayer",
+#         "CONFIG":{
+#         #localhost settings
+#             # "hosts":[(redis_host,6379)]
+#             # heroku settings
+#             "hosts":[os.environ.get('REDIS_URL','redis://localhost:6379')],
+#         },
+#         "ROUTING":"proj_track.routing.channel_routing"
+#     }
+# }
 if os.getcwd() =='/app':
     import dj_database_url
     DATABASES = {

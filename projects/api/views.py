@@ -16,6 +16,9 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 
+import django_fanout as fanout
+
+
 # Serializer Functions 
 
 class ProjectList(APIView):

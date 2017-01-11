@@ -108,11 +108,22 @@ class MLogsSerializer(ModelSerializer):
 		model =Logs
 		fields = ('id','project','activity','date',)
 
+
 @receiver(post_save,sender = Logs)
 def send_logs_notifications(sender,instance,created = False,**kwargs):
 	if created:
 		serializer = MLogsSerializer(instance)
-		fanout.publish('test',serializer.data)
+		task_level = int(instance.activity.level) + 1 
+		actv=Activity.objects.get(level=task_level)
+		serializer2 = MActivitySerializer(actv)
+		
+		data = {
+		'completed':serializer.data,
+		'pending':serializer2.data
+		}
+		
+		fanout.publish('test',data)
+
 		# Group("logs").send({"text":json.dumps(serializer.data)})
 	
 

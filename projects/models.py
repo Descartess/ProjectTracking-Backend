@@ -3,6 +3,7 @@ from Users.models import Client,Personnel
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
+from Users.api.serializers import *
 #from channels import Group
 import django_fanout as fanout
 
@@ -109,6 +110,15 @@ class MLogsSerializer(ModelSerializer):
 		fields = ('id','project','activity','date',)
 
 
+class MTaskSerializer(ModelSerializer):
+	person = PersonnelSerializer()
+	supervisor = PersonnelSerializer()
+	activity= MActivitySerializer()
+	project = MProjectSerializer()
+	class Meta:
+		model = Tasks
+		fields =('id','task_description','person','activity','project','supervisor','due_date','status')
+
 @receiver(post_save,sender = Logs)
 def send_logs_notifications(sender,instance,created = False,**kwargs):
 	if created:
@@ -125,6 +135,31 @@ def send_logs_notifications(sender,instance,created = False,**kwargs):
 		fanout.publish('test',data)
 
 		# Group("logs").send({"text":json.dumps(serializer.data)})
+
+
+
+@receiver(post_save,sender = Tasks )
+def tasks_notification(sender,instance,created=False,**kwargs):
+	if created:
+		serializer = MTaskSerializer(instance)
+		person = serializer.data.person.email
+		receiver = str(person)
+		fanout.publish(receiver,serializer.data)
+	else:
+		serializer = MTaskSerializer(instance)
+		status = int(serializer.data.status)
+		
+		if status == 1 or status == 3:
+			person = serializer.data.person.email
+			receiver = str(person)
+			fanout.publish(receiver,serializer.data)
+		else:
+			person = serializer.data.supervisor.email
+			receiver = str(person)
+			fanout.publish(receiver,serializer.data)
+
+
+
 	
 
 

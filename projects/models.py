@@ -140,23 +140,29 @@ def send_logs_notifications(sender,instance,created = False,**kwargs):
 
 @receiver(post_save,sender = Tasks )
 def tasks_notification(sender,instance,created=False,**kwargs):
+	serializer = MTaskSerializer(instance)
+	data = serializer.data
 	if created:
-		serializer = MTaskSerializer(instance)
-		person = serializer.data.person.email
-		receiver = str(person)
-		fanout.publish(receiver,serializer.data)
+		per_son_f = data['person']['first_name']
+		per_son_l = data['person']['last_name']
+		per_son = per_son_l+per_son_f
+		receiver = str(per_son)
+		fanout.publish(receiver,data)
 	else:
-		serializer = MTaskSerializer(instance)
-		status = int(serializer.data.status)
-		
+		status = int(data['status'])
 		if status == 1 or status == 3:
-			person = serializer.data.person.email
-			receiver = str(person)
-			fanout.publish(receiver,serializer.data)
+			per_son_f = data['person']['first_name']
+			per_son_l = data['person']['last_name']
+			per_son = per_son_l+per_son_f
+			receiver = str(per_son)
+			fanout.publish(receiver,data)
 		else:
-			person = serializer.data.supervisor.email
-			receiver = str(person)
-			fanout.publish(receiver,serializer.data)
+			per_son_f = data['person']['first_name']
+			per_son_l = data['supervisor']['last_name']
+			per_son = per_son_l+per_son_f
+			receiver = str(per_son)
+			print receiver
+			fanout.publish(receiver,data)
 
 
 

@@ -18,7 +18,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 
 import django_fanout as fanout
 
-fanout.publish('test','Test Publish')
+# fanout.publish('test','Test Publish')
 
 # Serializer Functions 
 

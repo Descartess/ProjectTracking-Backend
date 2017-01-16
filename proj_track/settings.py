@@ -202,7 +202,7 @@ if os.getcwd() =='/app':
     'default':dj_database_url.config(default='postgres://localhost')
     }
     # Honor the X forwarded Proto header 
-    SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARED_PROTO",'hhtps')
+    SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARED_PROTO",'https')
     ALLOWED_HOSTS=['ssc-project-tracking.herokuapp.com']
     DEBUG = False
     BASE_DIR=os.path.dirname(os.path.abspath(__file__))

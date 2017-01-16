@@ -147,6 +147,7 @@ def tasks_notification(sender,instance,created=False,**kwargs):
 		per_son_l = data['person']['last_name']
 		per_son = per_son_l+per_son_f
 		receiver = str(per_son)
+		receiver = receiver.replace(" ","")
 		fanout.publish(receiver,data)
 	else:
 		status = int(data['status'])
@@ -155,13 +156,14 @@ def tasks_notification(sender,instance,created=False,**kwargs):
 			per_son_l = data['person']['last_name']
 			per_son = per_son_l+per_son_f
 			receiver = str(per_son)
+			receiver = receiver.replace(" ","")
 			fanout.publish(receiver,data)
 		else:
 			per_son_f = data['person']['first_name']
 			per_son_l = data['supervisor']['last_name']
 			per_son = per_son_l+per_son_f
 			receiver = str(per_son)
-			print receiver
+			receiver = receiver.replace(" ","")
 			fanout.publish(receiver,data)
 
 

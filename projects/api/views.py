@@ -286,6 +286,15 @@ class PersonnelTaskList(APIView):
 			return Response(data)
 		pass
 
+class VerbsList(APIView):
+	permission_classes = (PersonnelPermission,)
+	authentication_classes = (TokenAuthentication,BasicAuthentication)
+	def get(self,request,format= None):
+		queryset = DepartmentVerbs.objects.all()
+		serializer = VerbsSerializer(queryset,many = True)
+		return Response(serializer.data)
+
+		
 class TaskSaveList(APIView):
 	permission_classes = (PersonnelPermission,)
 	authentication_classes = (TokenAuthentication,BasicAuthentication)
@@ -297,16 +306,19 @@ class TaskSaveList(APIView):
 		
 	def post(self,request,pk,format = None):
 		data = request.data
+		data2 = []
 		task =data["task_info"]
 		comment = data["comment"]
-		serializer = TaskSaveSerializer(data = task)
-		if serializer.is_valid():
-			Task = serializer.save() 
-			comment['task'] = Task.id
-			serializer0 = CommentSaveSerializer(data = comment)
-			if serializer0.is_valid():
-				serializer0.save()
-		return Response(serializer.data)
+		for elem in task:
+			serializer = TaskSaveSerializer(data = elem)
+			if serializer.is_valid():
+				Task = serializer.save() 
+				data2.append(serializer.data)
+				comment['task'] = Task.id
+				serializer0 = CommentSaveSerializer(data = comment)
+				if serializer0.is_valid():
+					serializer0.save()
+		return Response(data2)
 
 	def put(self,request,pk,format = None):
 		task = self.get_object(pk)

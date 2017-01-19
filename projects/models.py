@@ -78,6 +78,7 @@ class Tasks(models.Model):
 	due_date = models.DateField(null=True,blank=True)
 	date_added = models.DateField(auto_now_add=True)
 	status = models.IntegerField()
+	percentageCompletion = models.IntegerField(default=0)
 
 	def __unicode__(self):
 		return "%s %s %s "%(self.task_description,self.project,self.activity)
@@ -90,6 +91,34 @@ class Comments(models.Model):
 
 	def __unicode__(self):
 		return "%s %s"%(self.task,self.comment)
+
+class DepartmentVerbs(models.Model):
+	PROJ='Projects Department'
+	MARKETING='Marketing'
+	ENGINEERING='Engineering'
+	FABRICATION='Fabrication'
+	CLIENT='Client'
+
+	DIVISIONS = (
+		(PROJ,'Projects Department'),
+		(MARKETING,'Marketing'),
+		(ENGINEERING,'Engineering'),
+		(FABRICATION,'Fabrication'),
+		(CLIENT,'Client')
+		)
+
+	verb = models.CharField(max_length=100)
+	classification = models.CharField(max_length=20,choices=DIVISIONS,default=PROJ)
+
+	def __unicode__(self):
+		return " %s   %s"%(self.verb,self.classification)
+
+
+class PersonalVerbs(models.Model):
+	verb = models.CharField(max_length=100)
+	person = models.ForeignKey(Personnel)
+
+
 
 
 class MProjectSerializer(ModelSerializer):

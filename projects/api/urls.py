@@ -18,6 +18,7 @@ urlpatterns=[
    url(r'^viewPersonnelTask/(?P<pk>\d+)/$',PersonnelTaskList.as_view()),
    url(r'^createTask/(?P<pk>\d+)/$',TaskSaveList.as_view()),
    url(r'^search/$',SearchList.as_view()),
+   url(r'^verbs/$',VerbsList.as_view()),
  ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

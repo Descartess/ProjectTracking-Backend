@@ -13,6 +13,11 @@ class PersonnelSerializer(ModelSerializer):
 		model = Personnel
 		fields = ('id','first_name','last_name','email','division','level','phone')
 
+class VerbsSerializer(ModelSerializer):
+	class Meta:
+		model = DepartmentVerbs
+		fields = ('id','verb','classification')
+
 
 class ProjectSerializer(ModelSerializer):
 	owner = ClientSerializer()
@@ -51,7 +56,7 @@ class TaskSerializer(ModelSerializer):
 	project = ProjectSerializer()
 	class Meta:
 		model = Tasks
-		fields =('id','task_description','person','activity','project','supervisor','due_date','status')
+		fields =('id','task_description','person','activity','project','supervisor','due_date','status','percentageCompletion')
 
 class TaskSaveSerializer(ModelSerializer):
 	person=PrimaryKeyRelatedField(queryset=Personnel.objects.all())
@@ -60,7 +65,7 @@ class TaskSaveSerializer(ModelSerializer):
 	activity=PrimaryKeyRelatedField(queryset=Activity.objects.all())
 	class Meta:
 		model = Tasks
-		fields =('id','task_description','person','activity','project','supervisor','due_date','status')
+		fields =('id','task_description','person','activity','project','supervisor','due_date','status','percentageCompletion')
 
 
 class CommentSerializer(ModelSerializer):
